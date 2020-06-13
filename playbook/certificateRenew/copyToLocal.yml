@@ -1,0 +1,32 @@
+#
+# renew certificate at a server with open ip address
+#
+---
+
+- hosts: linode
+
+  tasks:
+  # - name: remove /tmp/certificates if it exists
+  #   file:
+  #     path: /tmp/certificates
+  #     state: absent
+  #   delegate_to: localhost
+
+  - name: create /tmp/certificates
+    file:
+      path: /tmp/certificates
+      state: directory
+      recurse: yes
+    delegate_to: localhost
+
+  - name: copy private certificate to local folder
+    fetch:
+      src: /etc/letsencrypt/archive/cr1315.world/privkey1.pem
+      dest: /tmp/certificates/privkey1.pem
+      flat: yes
+
+  - name: copy certificate to local folder
+    fetch:
+      src: /etc/letsencrypt/archive/cr1315.world/fullchain1.pem
+      dest: /tmp/certificates/fullchain1.pem
+      flat: yes

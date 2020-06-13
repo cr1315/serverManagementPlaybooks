@@ -1,0 +1,21 @@
+#
+# renew certificate at a server with open ip address
+#
+---
+
+- hosts: linode
+
+  tasks:
+  - name: open port 80
+    firewalld:
+      zone: public
+      service: http
+      state: enabled
+
+  - name: start webserver(nginx this time)
+    systemd:
+      name: nginx
+      state: started
+
+  - name: run certbot renew
+    shell: "certbot renew"
