@@ -12,10 +12,21 @@
       service: http
       state: enabled
 
-  - name: start webserver(nginx this time)
+  - name: start webserver(nginx)
     systemd:
       name: nginx
       state: started
 
   - name: run certbot renew
     shell: "certbot renew"
+
+  - name: close port 80
+    firewalld:
+      zone: public
+      service: http
+      state: disabled
+
+  - name: stop webserver
+    systemd:
+      name: nginx
+      state: stopped
